@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第四章 地形系統 ｜ 高中地理數位教材 (HackMD Book Mode)</title>
+  <meta name="description" content="教育部108課綱高中地理第四章「地形系統」完整數位教材，支援HackMD書本模式、動態Mermaid架構圖、互動式評量與Web GIS探究。">
+  
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome & Mermaid.js & Marked.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            earth: {
+              50: '#fbf8f3',
+              100: '#f4ede1',
+              500: '#b4814b',
+              600: '#976435',
+              800: '#5c3a1e',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.3);
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.3);
+    }
+    /* Prose Markdown custom styling */
+    .markdown-body h1 { font-size: 1.875rem; font-weight: 800; margin-top: 1.5rem; margin-bottom: 1rem; color: #166534; }
+    .dark .markdown-body h1 { color: #4ade80; }
+    .markdown-body h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.25rem; }
+    .dark .markdown-body h2 { border-color: #334155; }
+    .markdown-body h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .markdown-body p { margin-bottom: 0.75rem; line-height: 1.75; }
+    .markdown-body ul, .markdown-body ol { margin-left: 1.5rem; margin-bottom: 0.75rem; list-style-type: disc; }
+    .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .markdown-body th, .markdown-body td { border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; }
+    .dark .markdown-body th, .dark .markdown-body td { border-color: #475569; }
+    .markdown-body th { background-color: #f1f5f9; font-weight: bold; }
+    .dark .markdown-body th { background-color: #1e293b; }
+    .markdown-body blockquote { border-left: 4px solid #22c55e; padding-left: 1rem; color: #475569; margin: 1rem 0; }
+    .dark .markdown-body blockquote { color: #94a3b8; }
+  </style>
+</head>
+<body class="bg-stone-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg focus:outline-none">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <a href="index.html" class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-green-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-green-500/20">
+            <i class="fa-solid fa-mountain-sun text-lg"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-base tracking-tight bg-gradient-to-r from-green-700 to-emerald-600 dark:from-green-400 dark:to-emerald-300 bg-clip-text text-transparent">第四章 地形系統</span>
+            <span class="hidden sm:inline-block ml-1.5 px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">HackMD Book Mode</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center Search -->
+      <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
+        <div class="relative w-full">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="globalSearch" placeholder="搜尋核心概念、地貌（如：牛軛湖、突堤效應、冰斗）..." class="w-full pl-9 pr-4 py-1.5 text-sm rounded-full bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none transition-all">
+        </div>
+      </div>
+
+      <!-- Right Buttons -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3">
+        <a href="book.md" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+          <i class="fa-solid fa-book-bookmark text-green-600"></i>
+          <span>書本目錄</span>
+        </a>
+        <a href="full_book.md" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition">
+          <i class="fa-solid fa-file-lines text-emerald-500"></i>
+          <span>單篇全書</span>
+        </a>
+        <button id="themeToggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="切換深淺模式">
+          <i class="fa-solid fa-moon dark:hidden text-slate-600"></i>
+          <i class="fa-solid fa-sun hidden dark:inline-block text-amber-400"></i>
+        </button>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="GitHub 倉庫">
+          <i class="fa-brands fa-github text-lg"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-green-50/80 via-white to-stone-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 py-10 sm:py-14">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="max-w-2xl text-center lg:text-left">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-green-100/80 dark:bg-green-950/60 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 text-xs font-semibold mb-4">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
+            <span>108課綱普通高級中學地理科 ｜ 互動數位教材</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+            探索大地的雕刻家：<br class="hidden sm:inline">
+            <span class="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 bg-clip-text text-transparent">地形系統與人地互動</span>
+          </h1>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+            透過「能量與物質投入 $\rightarrow$ 營力作用 $\rightarrow$ 地形產出 $\rightarrow$ 人類反饋」的完整系統思維，全面掌握內外營力、流水喀斯特冰河風浪地貌，並以 1904 臺灣堡圖解鎖鄉土地名密碼！
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
+            <a href="#curriculum" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-sm shadow-lg shadow-green-600/30 transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-compass"></i>
+              <span>開始學習單元</span>
+            </a>
+            <a href="book.md" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-semibold text-sm shadow-sm transition">
+              <i class="fa-solid fa-network-wired text-green-600"></i>
+              <span>HackMD 書本模式說明</span>
+            </a>
+            <button onclick="openModal('quickQuizModal')" class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800 hover:bg-amber-500/20 font-semibold text-sm transition">
+              <i class="fa-solid fa-lightbulb"></i>
+              <span>全章素養快篩測驗</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Info Card -->
+        <div class="w-full lg:w-96 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-slate-200/80 dark:border-slate-700/80">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+            <div class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">學習歷程進度</div>
+            <span id="progressPercent" class="text-xs font-black px-2 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">0%</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 mt-3 overflow-hidden">
+            <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-green-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <p id="progressLabel" class="text-xs text-slate-500 dark:text-slate-400 mt-2">已完成 0 / 15 個學習模組</p>
+
+          <div class="mt-5 space-y-2.5 pt-4 border-t border-slate-100 dark:border-slate-700 text-xs">
+            <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+              <span class="flex items-center"><i class="fa-solid fa-book-open text-green-500 w-4"></i> 教材架構</span>
+              <span class="font-bold">四大節次 + 實作篇</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+              <span class="flex items-center"><i class="fa-solid fa-magnifying-glass-location text-teal-500 w-4"></i> 探究案例</span>
+              <span class="font-bold">女王頭、屏東平原、桃園海岸</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+              <span class="flex items-center"><i class="fa-solid fa-map text-amber-500 w-4"></i> 地理實作</span>
+              <span class="font-bold">1904 臺灣堡圖地名解碼</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout (Sidebar + Curriculum) -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full flex gap-8">
+    
+    <!-- Left Sticky Sidebar Drawer (Chapters Index) -->
+    <aside id="sidebarMenu" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-6 transform -translate-x-full lg:translate-x-0 lg:static lg:w-72 lg:p-0 transition-transform duration-300 ease-in-out shrink-0 overflow-y-auto">
+      <div class="flex items-center justify-between lg:hidden mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <span class="font-bold text-sm">章節目錄清單</span>
+        <button id="sidebarClose" class="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">全書導航目錄</h3>
+          <nav id="moduleNavList" class="space-y-1 text-sm font-medium">
+            <!-- Dynamically Rendered Nav Links -->
+          </nav>
+        </div>
+
+        <!-- GIS Tools Box -->
+        <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs">
+          <div class="font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center">
+            <i class="fa-solid fa-layer-group text-green-500 mr-1.5"></i>
+            <span>數位探究 Web GIS 傳送門</span>
+          </div>
+          <ul class="space-y-1.5 text-slate-600 dark:text-slate-400">
+            <li><a href="http://gissrv4.sinica.edu.tw/gis/twhgis/" target="_blank" class="hover:text-green-600 dark:hover:text-green-400 flex items-center justify-between"><span>中研院百年歷史地圖</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a></li>
+            <li><a href="http://gn.moi.gov.tw/GeoNames/index.aspx" target="_blank" class="hover:text-green-600 dark:hover:text-green-400 flex items-center justify-between"><span>內政部地名資訊網</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a></li>
+            <li><a href="https://dmap.ncdr.nat.gov.tw/" target="_blank" class="hover:text-green-600 dark:hover:text-green-400 flex items-center justify-between"><span>NCDR 災害潛勢地圖</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <section class="flex-1 min-w-0" id="curriculum">
+      
+      <!-- Filter Chips & Actions -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div class="flex flex-wrap gap-2 text-xs font-medium">
+          <button onclick="filterCategory('all')" class="cat-btn active px-3 py-1.5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 transition">全部單元 (15)</button>
+          <button onclick="filterCategory('core')" class="cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 transition">核心概念 (4)</button>
+          <button onclick="filterCategory('water')" class="cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 transition">流水/岩溶/冰河 (4)</button>
+          <button onclick="filterCategory('coast')" class="cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 transition">風與海岸地貌 (4)</button>
+          <button onclick="filterCategory('practice')" class="cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 transition">實作與附錄 (3)</button>
+        </div>
+        <div class="text-xs text-slate-500">
+          點擊模組卡片閱讀精華與互動測驗
+        </div>
+      </div>
+
+      <!-- Modules Card Grid -->
+      <div id="moduleCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Rendered by JS -->
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Interactive Reader Modal -->
+  <div id="readerModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 animate-in fade-in duration-200">
+      <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <span id="modalCategoryBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300">章節</span>
+          <h3 id="modalTitle" class="text-lg font-bold text-slate-900 dark:text-white truncate max-w-md sm:max-w-xl">章節名稱</h3>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a id="modalSourceLink" href="#" target="_blank" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">
+            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> 查看原 Markdown
+          </a>
+          <button onclick="closeModal('readerModal')" class="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 markdown-body prose dark:prose-invert max-w-none text-sm sm:text-base" id="modalContent">
+        <!-- Markdown content rendered here -->
+      </div>
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between text-xs">
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" id="modalProgressCheck" class="w-4 h-4 rounded text-green-600 focus:ring-green-500">
+          <span class="font-medium text-slate-700 dark:text-slate-300">標記此模組為已掌握</span>
+        </label>
+        <button onclick="closeModal('readerModal')" class="px-4 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 font-bold hover:bg-slate-300 transition">關閉閱覽</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Quiz Modal -->
+  <div id="quickQuizModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800">
+      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-bold flex items-center"><i class="fa-solid fa-fire text-amber-500 mr-2"></i> 第四章地形系統 ｜ 素養概念快篩測驗</h3>
+        <button onclick="closeModal('quickQuizModal')" class="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 space-y-6 text-sm" id="quizContainer">
+        <!-- Quiz questions rendered by JS -->
+      </div>
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+        <button onclick="closeModal('quickQuizModal')" class="px-4 py-2 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700 transition">完成測驗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center text-white">
+          <i class="fa-solid fa-mountain"></i>
+        </div>
+        <div>
+          <p class="font-extrabold text-sm text-slate-800 dark:text-slate-100">高中地理：第四章 地形系統 (Landform Systems)</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">依據教育部 108 課綱高中地理教材編撰 ｜ 專為 GitHub Pages 與 HackMD 設計</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-6 text-xs text-slate-500 dark:text-slate-400">
+        <a href="book.md" class="hover:text-green-600">書本模式 (book.md)</a>
+        <a href="full_book.md" class="hover:text-green-600">單篇完整教材 (full_book.md)</a>
+        <a href="README.md" class="hover:text-green-600">GitHub 專案導覽</a>
+        <a href="https://hackmd.io" target="_blank" class="hover:text-green-600">HackMD 官方平台</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Module Database -->
+  <script>
+    // Module Data Store
+    const modules = [
+      {
+        id: "00",
+        file: "docs/00-introduction.md",
+        title: "00. 章首導讀：地形系統概念與人地互動",
+        category: "core",
+        badge: "系統導讀",
+        desc: "以台江內海至七股潟湖、國聖燈塔滄海桑田為例，探討地形系統演育及人類面對資源與災害的兩難。",
+        tags: ["系統概念", "台江內海", "七股潟湖", "資源vs災害"]
+      },
+      {
+        id: "01",
+        file: "docs/01-geomorphic-systems.md",
+        title: "01. 地形系統的概念與空間尺度",
+        category: "core",
+        badge: "概念基礎",
+        desc: "系統定義、能量物質投入、內營力與外營力比較，以及從微觀沙丘到宏觀全球沙漠的空間尺度思維。",
+        tags: ["投入與產出", "空間尺度", "內外營力", "沙漠格局"]
+      },
+      {
+        id: "02",
+        file: "docs/02-endogenic-processes.md",
+        title: "02. 內營力與地形演育（褶曲、斷層、火山）",
+        category: "core",
+        badge: "構造地貌",
+        desc: "背斜與向斜、地壘地塹斷層崖、921車籠埔斷層崖；基隆山侵入火山、寧靜式玄武岩台地與猛烈式火山錐對比。",
+        tags: ["背斜向斜", "地壘地塹", "基隆山", "火山危害與資源"]
+      },
+      {
+        id: "03",
+        file: "docs/03-exogenic-processes.md",
+        title: "03. 外營力與地形演育（風化、崩壞、侵蝕堆積）",
+        category: "core",
+        badge: "營力機制",
+        desc: "物理凍融與化學風化、四大崩壞類型（潛移/地滑/土石流/落石）、差異侵蝕鼻頭角岬灣、八卦台地演育歷程。",
+        tags: ["凍融作用", "四大崩壞", "差異侵蝕", "八卦台地"]
+      },
+      {
+        id: "04",
+        file: "docs/04-case-study-yehliu.md",
+        title: "04. 探究 4-1：野柳女王頭的歲月痕跡與蕈狀岩",
+        category: "core",
+        badge: "案例探究",
+        desc: "解密鈣質結核與差異侵蝕、頸圍從256公分縮至124公分歷程，深入思辨人為科技固化vs自然演育法則。",
+        tags: ["野柳女王頭", "蕈狀岩", "頸圍縮水", "俏皮公主"]
+      },
+      {
+        id: "05",
+        file: "docs/05-fluvial-landforms.md",
+        title: "05. 河流作用與地形（侵蝕堆積、曲流河階）",
+        category: "water",
+        badge: "流水地貌",
+        desc: "向源/下蝕/側蝕三向侵蝕、侵蝕基準面、沖積扇湧泉帶（五溝水）、氾濫平原、曲流凹凸岸水力學與大溪河階。",
+        tags: ["頭蝕與基準面", "沖積扇湧泉帶", "曲流牛軛湖", "大溪河階"]
+      },
+      {
+        id: "06",
+        file: "docs/06-karst-landforms.md",
+        title: "06. 岩溶作用與喀斯特地形（溶蝕地貌與洞穴）",
+        category: "water",
+        badge: "岩溶地貌",
+        desc: "碳酸鈣溶蝕與重沉澱反應、滲穴到殘丘演育序列、伏流與鐘乳石石筍石柱；深入剖析泰國睡美人洞18天搜救地質。",
+        tags: ["喀斯特序列", "石灰岩洞穴", "鐘乳石石筍", "睡美人洞救援"]
+      },
+      {
+        id: "07",
+        file: "docs/07-glacial-landforms.md",
+        title: "07. 冰河作用與地形（冰蝕、冰積、冰融流水）",
+        category: "water",
+        badge: "冰河地貌",
+        desc: "磨蝕與拔蝕機制、冰斗/角峰/U型谷/峽灣冰蝕地貌；冰磧物與流水外洗平原對比，歐洲第四紀冰河帶譜。",
+        tags: ["角峰馬特洪峰", "U型谷峽灣", "冰磧無層理", "歐洲黃土帶"]
+      },
+      {
+        id: "08",
+        file: "docs/08-case-study-pingtung.md",
+        title: "08. 探究 4-2：屏東平原水利改道與沖積扇演育",
+        category: "water",
+        badge: "案例探究",
+        desc: "潮州斷層抬升階地、1938年隘寮溪長堤改道工程、東港溪流量減半與河口海岸侵蝕後退之人地系統反饋。",
+        tags: ["潮州斷層", "隘寮溪長堤", "東港溪口後退", "系統反饋"]
+      },
+      {
+        id: "09",
+        file: "docs/09-aeolian-landforms.md",
+        title: "09. 風力作用與風成地形（風蝕、沙丘、黃土）",
+        category: "coast",
+        badge: "風成地貌",
+        desc: "吹蝕磨蝕成礫漠岩漠、三大沙丘類型（新月丘順風尖端、橫沙丘、縱沙丘）、桃園草漯沙丘、黃土高原肥力與侵蝕。",
+        tags: ["礫漠岩漠", "新月丘判定", "草漯沙丘", "黃土高原"]
+      },
+      {
+        id: "10",
+        file: "docs/10-coastal-landforms.md",
+        title: "10. 海水作用與海岸地形（海蝕、海積、升降）",
+        category: "coast",
+        badge: "海岸地貌",
+        desc: "海岸線濱線與潮間帶劃分、海蝕凹壁崖面平台洞門柱演育鏈、沙嘴潮埔潟湖海積地貌；離水海階vs沉水谷灣峽灣。",
+        tags: ["海蝕六大景觀", "濱外沙洲潟湖", "離水海階", "沉水谷灣"]
+      },
+      {
+        id: "11",
+        file: "docs/11-case-study-taoyuan.md",
+        title: "11. 探究 4-3：桃園海岸線後退與環境變遷",
+        category: "coast",
+        badge: "案例探究",
+        desc: "桃園西北海岸沙岸侵蝕危機、國軍海防碉堡20年間由陸地淪為海中孤島編年史，剖析上游截沙與港灣工程衝擊。",
+        tags: ["桃園海岸侵蝕", "碉堡泡水淹沒", "沙灘萎縮", "環境危機"]
+      },
+      {
+        id: "12",
+        file: "docs/12-human-environment.md",
+        title: "12. 地形系統與人類生活（突堤效應、災害調適）",
+        category: "coast",
+        badge: "人地調適",
+        desc: "富士山與大霸尖山聖山文化信仰、防波堤突堤效應（迎流淤背流蝕）、知本溪凹岸倒塌、口湖地層下陷與永續利用。",
+        tags: ["突堤效應", "知本溪金帥倒塌", "口湖地層下陷", "永續利用"]
+      },
+      {
+        id: "13",
+        file: "docs/13-activity-taiwan-toponyms.md",
+        title: "13. 活動GO：臺灣堡圖與地名中的地形密碼",
+        category: "practice",
+        badge: "地理實作",
+        desc: "1904臺灣堡圖圖例精準解讀、五大地名深入學習單（澳底、四鯤鯓、三層、灣仔、沙崙），自主Web GIS探究引導。",
+        tags: ["1904臺灣堡圖", "澳底海灣", "四鯤鯓沙洲", "三層河階", "Web GIS"]
+      },
+      {
+        id: "14",
+        file: "docs/14-appendix-glossary-quiz.md",
+        title: "14. 附錄：核心名詞對照表、思維導圖與學習評量",
+        category: "practice",
+        badge: "總結附錄",
+        desc: "第四章全地形詞彙中英對照精準定義表、全章核心思維導圖、歷屆實力評量題庫與精闢詳解。",
+        tags: ["名詞中英對照", "全章思維導圖", "素養評量", "試題解析"]
+      }
+    ];
+
+    // Quiz Questions Data
+    const quizQuestions = [
+      {
+        q: "1. 屏東縣萬巒鄉著名的「五溝水」聚落，早期因地下水清澈甘洌、湧泉充足而得名。依據山麓沖積扇水文特性，該聚落最可能位於沖積扇的何處？",
+        options: ["(A) 扇頂", "(B) 扇央", "(C) 扇端", "(D) 谷口峽谷"],
+        ans: 2,
+        explain: "沖積扇扇端因砂石粒徑轉細、黏土增加，地下水遇阻截在此呈帶狀湧出，形成『湧泉帶』，水源充沛宜於開墾聚落。"
+      },
+      {
+        q: "2. 某海岸沿岸流常年由北向南流動。若於海岸興建一座垂直突出海岸之防波堤，數年後防波堤兩側海灘最可能出現何種變化？",
+        options: ["(A) 北側淤積拓寬，南側侵蝕後退", "(B) 北側侵蝕後退，南側淤積拓寬", "(C) 兩側皆發生劇烈淤積", "(D) 兩側皆發生劇烈後退"],
+        ans: 0,
+        explain: "此為典型『突堤效應』。北側為迎海流側，漂沙受阻沉積；南側為背海流側，泥沙來源遭阻斷，波浪侵蝕導致海岸線退縮。"
+      },
+      {
+        q: "3. 關於新月丘（Barchan）的外觀與風向判定，下列敘述何者正確？",
+        options: ["(A) 迎風坡較陡，背風坡較緩", "(B) 沙脊走向與盛行風向垂直", "(C) 新月丘兩翼尖端所指的方向即為順風前進方向", "(D) 形成於風向多變且沙源極度豐富的環境"],
+        ans: 2,
+        explain: "新月丘迎風坡緩（10°~15°）、背風坡陡（約32°）；受單一風向吹拂，兩翼尖端順著風向向前伸展。"
+      }
+    ];
+
+    // Render Navigation and Cards
+    function renderApp() {
+      // Nav List
+      const navList = document.getElementById('moduleNavList');
+      navList.innerHTML = modules.map(m => `
+        <a href="#curriculum" onclick="openReader('${m.id}')" class="flex items-center justify-between px-3 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition group">
+          <span class="truncate text-xs group-hover:text-green-600 dark:group-hover:text-green-400">${m.title}</span>
+          <span id="nav-check-${m.id}" class="text-[11px] text-slate-300 dark:text-slate-600"><i class="fa-regular fa-circle-check"></i></span>
+        </a>
+      `).join('');
+
+      // Cards
+      renderCards(modules);
+      updateProgress();
+      renderQuiz();
+    }
+
+    function renderCards(list) {
+      const container = document.getElementById('moduleCardsContainer');
+      container.innerHTML = list.map(m => {
+        const isDone = localStorage.getItem(`geo_done_${m.id}`) === 'true';
+        return `
+          <div class="group bg-white dark:bg-slate-800/90 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 shadow-sm hover:shadow-md hover:border-green-500/50 dark:hover:border-green-500/50 transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-300">${m.badge}</span>
+                <button onclick="toggleDone('${m.id}')" class="text-sm ${isDone ? 'text-green-500' : 'text-slate-300 dark:text-slate-600'} hover:scale-110 transition" title="標記完成狀態">
+                  <i class="${isDone ? 'fa-solid' : 'fa-regular'} fa-circle-check"></i>
+                </button>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition cursor-pointer" onclick="openReader('${m.id}')">
+                ${m.title}
+              </h3>
+              <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
+                ${m.desc}
+              </p>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-750 flex items-center justify-between">
+              <div class="flex flex-wrap gap-1">
+                ${m.tags.slice(0, 3).map(t => `<span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300">#${t}</span>`).join('')}
+              </div>
+              <button onclick="openReader('${m.id}')" class="text-xs font-semibold text-green-600 dark:text-green-400 hover:underline flex items-center">
+                <span>研讀</span> <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterCategory(cat) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900'));
+      event.target.classList.add('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+      if (cat === 'all') {
+        renderCards(modules);
+      } else {
+        renderCards(modules.filter(m => m.category === cat));
+      }
+    }
+
+    // Search
+    document.getElementById('globalSearch').addEventListener('input', (e) => {
+      const kw = e.target.value.toLowerCase().trim();
+      const filtered = modules.filter(m => 
+        m.title.toLowerCase().includes(kw) || 
+        m.desc.toLowerCase().includes(kw) || 
+        m.tags.some(t => t.toLowerCase().includes(kw))
+      );
+      renderCards(filtered);
+    });
+
+    // Reader Modal Functionality
+    let currentModuleId = null;
+
+    async function openReader(id) {
+      const mod = modules.find(m => m.id === id);
+      if (!mod) return;
+      currentModuleId = id;
+
+      document.getElementById('modalTitle').innerText = mod.title;
+      document.getElementById('modalCategoryBadge').innerText = mod.badge;
+      document.getElementById('modalSourceLink').href = mod.file;
+
+      const isDone = localStorage.getItem(`geo_done_${id}`) === 'true';
+      const check = document.getElementById('modalProgressCheck');
+      check.checked = isDone;
+      check.onchange = () => toggleDone(id);
+
+      const contentBox = document.getElementById('modalContent');
+      contentBox.innerHTML = '<div class="py-12 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-2xl mr-2"></i> 正在載入模組教材...</div>';
+      openModal('readerModal');
+
+      try {
+        const res = await fetch(mod.file);
+        if (!res.ok) throw new Error('File not accessible');
+        let text = await res.text();
+        // Remove frontmatter if present
+        if (text.startsWith('---')) {
+          const parts = text.split('---');
+          if (parts.length >= 3) text = parts.slice(2).join('---');
+        }
+        contentBox.innerHTML = marked.parse(text);
+        mermaid.run({ nodes: contentBox.querySelectorAll('.language-mermaid') });
+      } catch (err) {
+        contentBox.innerHTML = `
+          <div class="p-6 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200">
+            <h4 class="font-bold text-base mb-2"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 本地檔案安全性限制提示 (CORS)</h4>
+            <p class="text-xs mb-3">若您是直接以雙擊 (file://) 開啟 index.html，瀏覽器將基於安全性規則封鎖直接 fetch 本地 Markdown 檔案。</p>
+            <p class="text-xs mb-4"><strong>建議解決方式：</strong></p>
+            <ul class="list-disc pl-5 text-xs space-y-1 mb-4">
+              <li>上傳至 <strong>GitHub Pages</strong> 後即可無縫即時瀏覽全教材。</li>
+              <li>或在終端機執行 <code>python -m http.server 8000</code> 並於瀏覽器造訪 <code>http://localhost:8000</code>。</li>
+              <li>亦可直接點擊下方按鈕閱讀本單元檔案：</li>
+            </ul>
+            <a href="${mod.file}" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-green-600 text-white font-bold text-xs hover:bg-green-700 transition">
+              <i class="fa-solid fa-file-lines mr-1.5"></i> 直接在新分頁開啟 ${mod.file}
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    function toggleDone(id) {
+      const current = localStorage.getItem(`geo_done_${id}`) === 'true';
+      localStorage.setItem(`geo_done_${id}`, (!current).toString());
+      renderCards(modules);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let doneCount = 0;
+      modules.forEach(m => {
+        const isDone = localStorage.getItem(`geo_done_${m.id}`) === 'true';
+        if (isDone) doneCount++;
+        const navCheck = document.getElementById(`nav-check-${m.id}`);
+        if (navCheck) {
+          navCheck.innerHTML = isDone 
+            ? '<i class="fa-solid fa-circle-check text-green-500"></i>' 
+            : '<i class="fa-regular fa-circle-check"></i>';
+        }
+      });
+      const percent = Math.round((doneCount / modules.length) * 100);
+      document.getElementById('progressPercent').innerText = `${percent}%`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+      document.getElementById('progressLabel').innerText = `已完成 ${doneCount} / ${modules.length} 個學習模組`;
+    }
+
+    // Modal Control
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Quiz Renderer
+    function renderQuiz() {
+      const box = document.getElementById('quizContainer');
+      box.innerHTML = quizQuestions.map((q, idx) => `
+        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <p class="font-bold text-slate-900 dark:text-slate-100 mb-3">${q.q}</p>
+          <div class="space-y-2">
+            ${q.options.map((opt, oIdx) => `
+              <button onclick="checkAnswer(${idx}, ${oIdx})" id="q-${idx}-opt-${oIdx}" class="w-full text-left px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-green-500 text-xs transition">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div id="q-${idx}-feedback" class="mt-3 text-xs hidden p-2.5 rounded-lg"></div>
+        </div>
+      `).join('');
+    }
+
+    function checkAnswer(qIdx, optIdx) {
+      const q = quizQuestions[qIdx];
+      const feedback = document.getElementById(`q-${qIdx}-feedback`);
+      feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-rose-100', 'text-rose-800');
+      if (optIdx === q.ans) {
+        feedback.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-950', 'dark:text-green-300');
+        feedback.innerHTML = `<strong><i class="fa-solid fa-circle-check mr-1"></i> 回答正確！</strong> ${q.explain}`;
+      } else {
+        feedback.classList.add('bg-rose-100', 'text-rose-800', 'dark:bg-rose-950', 'dark:text-rose-300');
+        feedback.innerHTML = `<strong><i class="fa-solid fa-circle-xmark mr-1"></i> 選項未盡精確！</strong> ${q.explain}`;
+      }
+    }
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('themeToggle');
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    themeBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    });
+
+    // Mobile Sidebar Drawer
+    const sidebar = document.getElementById('sidebarMenu');
+    document.getElementById('sidebarToggle').addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+    document.getElementById('sidebarClose').addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+
+    // Initialize
+    window.onload = () => {
+      renderApp();
+      mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+    };
+  </script>
+</body>
+</html>
